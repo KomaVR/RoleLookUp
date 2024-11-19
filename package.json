@@ -1,0 +1,11 @@
+{
+  "name": "discord-role-members",
+  "version": "1.0.0",
+  "main": "api/getRoleMembers.js",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
