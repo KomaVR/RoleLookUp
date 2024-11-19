@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Role Members</title>
+</head>
+<body>
+  <h1>Discord Role Members</h1>
+  <form id="roleForm">
+    <label for="guildId">Guild ID:</label>
+    <input type="text" id="guildId" name="guildId" required>
+    <br>
+    <label for="roleId">Role ID:</label>
+    <input type="text" id="roleId" name="roleId" required>
+    <br>
+    <button type="submit">Get Members</button>
+  </form>
+  <ul id="membersList"></ul>
+
+  <script>
+    document.getElementById('roleForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const guildId = document.getElementById('guildId').value;
+      const roleId = document.getElementById('roleId').value;
+
+      try {
+        const response = await fetch('/api/getRoleMembers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ guildId, roleId })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const membersList = document.getElementById('membersList');
+          membersList.innerHTML = '';
+          data.forEach(member => {
+            const listItem = document.createElement('li');
+            listItem.textContent = member.user.username;
+            membersList.appendChild(listItem);
+          });
+        } else {
+          alert(data.error || 'An error occurred');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred');
+      }
+    });
+  </script>
+</body>
+</html>
